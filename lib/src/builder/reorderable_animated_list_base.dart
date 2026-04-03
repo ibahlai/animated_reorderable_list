@@ -12,7 +12,7 @@ typedef AnimatedWidgetBuilder<W extends Widget, E> = Widget Function(
 
 typedef EqualityChecker<E> = bool Function(E, E);
 
-const Duration kAnimationDuration = Duration(milliseconds: 300);
+const Duration kAnimationDuration = Duration(milliseconds: 1000);
 const Duration kDefaultDragStartDelay = Duration(milliseconds: 500);
 
 abstract class ReorderableAnimatedListBase<W extends Widget, E extends Object>
