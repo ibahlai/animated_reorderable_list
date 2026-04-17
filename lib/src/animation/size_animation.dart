@@ -13,18 +13,18 @@ class SizeAnimation extends AnimationEffect<double> {
   /// Gradually animates the size of the item.
   SizeAnimation(
       {super.delay,
-      super.duration,
-      super.curve,
-      this.begin,
-      this.end,
-      this.axis,
-      this.axisAlignment});
+        super.duration,
+        super.curve,
+        this.begin,
+        this.end,
+        this.axis,
+        this.axisAlignment});
 
   @override
   Widget build(BuildContext context, Widget child, Animation<double> animation,
       EffectEntry entry, Duration totalDuration) {
     final Animation<double> sizeFactor = buildAnimation(entry, totalDuration,
-            begin: begin ?? beginValue, end: end ?? endValue)
+        begin: begin ?? beginValue, end: end ?? endValue)
         .animate(animation);
     return Align(
       child: SizeTransition(

@@ -85,7 +85,7 @@ class ReorderableAnimatedContentState extends State<ReorderableAnimatedContent>
     super.didUpdateWidget(oldWidget);
   }
 
-  void _updateAnimationTranslation() {
+  void _updateAnimationTranslation() async {
     if (widget.transitionData.animate) {
       Offset offsetDiff = (widget.transitionData.startOffset + offset) -
           widget.transitionData.endOffset;
@@ -94,7 +94,7 @@ class ReorderableAnimatedContentState extends State<ReorderableAnimatedContent>
         if (_offsetAnimation == null) {
           _offsetAnimation = AnimationController(
             vsync: listState,
-            duration: kAnimationDuration,
+            duration: widget.transitionData.animationDuration > Duration.zero ? widget.transitionData.animationDuration : kAnimationDuration,
           )
             ..addListener(rebuild)
             ..addStatusListener((AnimationStatus status) {
@@ -104,8 +104,11 @@ class ReorderableAnimatedContentState extends State<ReorderableAnimatedContent>
                 _offsetAnimation!.dispose();
                 _offsetAnimation = null;
               }
-            })
-            ..forward();
+            });
+          if(widget.transitionData.delay > Duration.zero) {
+            await Future.delayed(widget.transitionData.delay);
+          }
+          _offsetAnimation?.forward();
         } else {
           _startOffset = offsetDiff;
           _offsetAnimation!.forward(from: 0.0);
@@ -117,7 +120,7 @@ class ReorderableAnimatedContentState extends State<ReorderableAnimatedContent>
   Offset get offset {
     if (_offsetAnimation != null) {
       final Offset offset =
-          Offset.lerp(_startOffset, _targetOffset, _offsetAnimation!.value)!;
+      Offset.lerp(_startOffset, _targetOffset, _offsetAnimation!.value)!;
       return offset;
     }
     return _targetOffset;
@@ -177,7 +180,7 @@ class ReorderableAnimatedContentState extends State<ReorderableAnimatedContent>
       child: Transform.translate(
           offset: offset,
           child:
-              !_dragging ? widget.child : SizedBox.fromSize(size: _dragSize)),
+          !_dragging ? widget.child : SizedBox.fromSize(size: _dragSize)),
     );
   }
 

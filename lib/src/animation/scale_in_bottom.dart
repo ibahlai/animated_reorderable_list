@@ -15,7 +15,7 @@ class ScaleInBottom extends AnimationEffect<double> {
   Widget build(BuildContext context, Widget child, Animation<double> animation,
       EffectEntry entry, Duration totalDuration) {
     final Animation<double> scale = buildAnimation(entry, totalDuration,
-            begin: begin ?? beginValue, end: endValue)
+        begin: begin ?? beginValue, end: endValue)
         .animate(animation);
     return ScaleTransition(
       alignment: Alignment.bottomCenter,

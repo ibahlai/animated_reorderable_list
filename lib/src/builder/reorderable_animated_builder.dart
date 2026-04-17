@@ -36,22 +36,22 @@ class ReorderableAnimatedBuilder<E> extends StatefulWidget {
 
   const ReorderableAnimatedBuilder(
       {Key? key,
-      required this.itemBuilder,
-      required this.insertAnimationBuilder,
-      required this.removeAnimationBuilder,
-      this.onReorder,
-      this.onReorderEnd,
-      this.onReorderStart,
-      this.proxyDecorator,
-      this.initialCount = 0,
-      this.delegateBuilder,
-      this.scrollDirection = Axis.vertical,
-      required this.buildDefaultDragHandles,
-      this.longPressDraggable = false,
-      required this.dragStartDelay,
-      required this.nonDraggableIndices,
-      required this.lockedIndices,
-      required this.addDragStartListener})
+        required this.itemBuilder,
+        required this.insertAnimationBuilder,
+        required this.removeAnimationBuilder,
+        this.onReorder,
+        this.onReorderEnd,
+        this.onReorderStart,
+        this.proxyDecorator,
+        this.initialCount = 0,
+        this.delegateBuilder,
+        this.scrollDirection = Axis.vertical,
+        required this.buildDefaultDragHandles,
+        this.longPressDraggable = false,
+        required this.dragStartDelay,
+        required this.nonDraggableIndices,
+        required this.lockedIndices,
+        required this.addDragStartListener})
       : assert(initialCount >= 0),
         super(key: key);
 
@@ -61,17 +61,17 @@ class ReorderableAnimatedBuilder<E> extends StatefulWidget {
 
   static ReorderableAnimatedBuilderState of(BuildContext context) {
     final ReorderableAnimatedBuilderState? result =
-        context.findAncestorStateOfType<ReorderableAnimatedBuilderState>();
+    context.findAncestorStateOfType<ReorderableAnimatedBuilderState>();
     assert(() {
       if (result == null) {
         throw FlutterError(
           'ReorderableAnimatedBuilderState.of() called with a context that does not contain a ReorderableAnimatedBuilderState.\n'
-          'No ReorderableAnimatedBuilderState ancestor could be found starting from the '
-          'context that was passed to ReorderableAnimatedBuilderState.of(). This can '
-          'happen when the context provided is from the same StatefulWidget that '
-          'built the AnimatedList.'
-          'The context used was:\n'
-          '  $context',
+              'No ReorderableAnimatedBuilderState ancestor could be found starting from the '
+              'context that was passed to ReorderableAnimatedBuilderState.of(). This can '
+              'happen when the context provided is from the same StatefulWidget that '
+              'built the AnimatedList.'
+              'The context used was:\n'
+              '  $context',
         );
       }
       return true;
@@ -92,7 +92,7 @@ class ReorderableAnimatedBuilderState extends State<ReorderableAnimatedBuilder>
 
   Map<int, ItemTransitionData> childrenMap = <int, ItemTransitionData>{};
   final Map<int, ReorderableAnimatedContentState> _items =
-      <int, ReorderableAnimatedContentState>{};
+  <int, ReorderableAnimatedContentState>{};
 
   OverlayEntry? _overlayEntry;
   int? _dragIndex;
@@ -111,7 +111,7 @@ class ReorderableAnimatedBuilderState extends State<ReorderableAnimatedBuilder>
 
   bool get _reverse =>
       _scrollable.axisDirection == AxisDirection.up ||
-      _scrollable.axisDirection == AxisDirection.left;
+          _scrollable.axisDirection == AxisDirection.left;
 
   bool get isGrid => widget.delegateBuilder != null;
 
@@ -144,8 +144,8 @@ class ReorderableAnimatedBuilderState extends State<ReorderableAnimatedBuilder>
 
   void startItemDragReorder(
       {required int index,
-      required PointerDownEvent event,
-      required MultiDragGestureRecognizer recognizer}) {
+        required PointerDownEvent event,
+        required MultiDragGestureRecognizer recognizer}) {
     assert(0 <= index && index < _itemsCount);
     setState(() {
       if (_dragInfo != null) {
@@ -237,12 +237,12 @@ class ReorderableAnimatedBuilderState extends State<ReorderableAnimatedBuilder>
 
     /// get the scroll window position on the screen
     final scrollRenderBox =
-        _dragInfo!.scrollable!.context.findRenderObject()! as RenderBox;
+    _dragInfo!.scrollable!.context.findRenderObject()! as RenderBox;
     final Offset scrollPosition = scrollRenderBox.localToGlobal(Offset.zero);
 
     /// calculate the start and end position for the scroll window
     double scrollWindowStart =
-        isVertical ? scrollPosition.dy : scrollPosition.dx;
+    isVertical ? scrollPosition.dy : scrollPosition.dx;
     double scrollWindowEnd = scrollWindowStart +
         (isVertical ? scrollRenderBox.size.height : scrollRenderBox.size.width);
 
@@ -251,7 +251,7 @@ class ReorderableAnimatedBuilderState extends State<ReorderableAnimatedBuilder>
 
     /// calculate the start and end position for the proxy object
     double proxyObjectStart =
-        isVertical ? proxyObjectPosition.dy : proxyObjectPosition.dx;
+    isVertical ? proxyObjectPosition.dy : proxyObjectPosition.dx;
     double proxyObjectEnd = proxyObjectStart +
         (isVertical ? _dragInfo!.itemSize.height : _dragInfo!.itemSize.width);
 
@@ -314,7 +314,7 @@ class ReorderableAnimatedBuilderState extends State<ReorderableAnimatedBuilder>
               _extentOffset(item.itemExtent, scrollDirection);
         } else {
           int atIndex =
-              _dragIndex! < _insertIndex! ? _insertIndex! + 1 : _insertIndex!;
+          _dragIndex! < _insertIndex! ? _insertIndex! + 1 : _insertIndex!;
           if (_dragIndex! > _insertIndex! && widget.lockedIndices.isNotEmpty) {
             atIndex = _insertIndex! + 1;
             if (!widget.lockedIndices.contains(atIndex)) {
@@ -330,7 +330,7 @@ class ReorderableAnimatedBuilderState extends State<ReorderableAnimatedBuilder>
               _extentOffset(item.itemExtent, scrollDirection);
         } else {
           int atIndex =
-              _dragIndex! < _insertIndex! ? _insertIndex! : _insertIndex! - 1;
+          _dragIndex! < _insertIndex! ? _insertIndex! : _insertIndex! - 1;
 
           // if the item is locked, we need to calculate final position from the previous item
           // if the previous item is locked, then we calculate position from the previous item
@@ -602,17 +602,18 @@ class ReorderableAnimatedBuilderState extends State<ReorderableAnimatedBuilder>
 
     if (childrenMap.containsKey(index)) {
       final _ActiveItem? incomingItem =
-          _removeActiveItemAt(_incomingItems, itemIndex);
+      _removeActiveItemAt(_incomingItems, itemIndex);
 
       final AnimationController sizeController = incomingItem?.sizeAnimation ??
           AnimationController(
-              vsync: this, duration: kAnimationDuration, value: 1.0);
+              vsync: this, duration: Duration(milliseconds: 100), value: 1.0);
+
       final AnimationController controller = incomingItem?.controller ??
           AnimationController(
               duration: removeItemDuration, value: 1.0, vsync: this)
-        ..addStatusListener((status) => ());
+            ..addStatusListener((status) => ());
       final _ActiveItem outgoingItem =
-          _ActiveItem.animation(controller, itemIndex, sizeController);
+      _ActiveItem.animation(controller, itemIndex, null);
 
       _outgoingItems
         ..add(outgoingItem)
@@ -626,9 +627,9 @@ class ReorderableAnimatedBuilderState extends State<ReorderableAnimatedBuilder>
           }
           sizeController.reverse(from: 1.0).then((value) {
             final removedItem =
-                _removeActiveItemAt(_outgoingItems, outgoingItem.itemIndex)!;
+            _removeActiveItemAt(_outgoingItems, outgoingItem.itemIndex)!;
             removedItem.controller!.dispose();
-            removedItem.sizeAnimation!.dispose();
+            // removedItem.sizeAnimation!.dispose();
 
             // Decrement the incoming and outgoing item indices to account
             // for the removal.
@@ -637,6 +638,10 @@ class ReorderableAnimatedBuilderState extends State<ReorderableAnimatedBuilder>
             }
             for (final _ActiveItem item in _outgoingItems) {
               if (item.itemIndex > outgoingItem.itemIndex) item.itemIndex -= 1;
+            }
+            final Map<int, Offset> currentOffsets = {};
+            for (int i = index; i < _itemsCount; i++) {
+              currentOffsets[i] = _itemOffsetAt(i);
             }
             _onItemRemoved(index, removeItemDuration);
           });
@@ -661,7 +666,9 @@ class ReorderableAnimatedBuilderState extends State<ReorderableAnimatedBuilder>
         startOffset: toOffset, endOffset: fromOffset, animate: !_isDragging);
   }
 
-  void _onItemRemoved(int itemIndex, Duration removeDuration) {
+  void _onItemRemoved(int itemIndex, Duration removeDuration) async {
+    print('_onItemRemoved');
+    print('itemIndex $itemIndex');
     final updatedChildrenMap = <int, ItemTransitionData>{};
     if (childrenMap.containsKey(itemIndex)) {
       for (final entry in childrenMap.entries) {
@@ -670,22 +677,28 @@ class ReorderableAnimatedBuilderState extends State<ReorderableAnimatedBuilder>
         } else if (entry.key == itemIndex) {
           continue;
         } else {
+          Offset startOffset = _itemOffsetAt(entry.key);
+          Offset endOffset =  Offset(startOffset.dx, _itemOffsetAt(entry.key - 1).dy) ;
           updatedChildrenMap[entry.key - 1] = childrenMap[entry.key]!.copyWith(
-              startOffset: _itemOffsetAt(entry.key),
-              endOffset: _itemOffsetAt(entry.key - 1),
-              animate: isGrid);
+              startOffset: startOffset,
+              endOffset: endOffset,
+              delay: Duration(milliseconds: (entry.key - 1) * 100),
+              animationDuration: Duration(milliseconds: 500),
+              animate: true);
         }
       }
     }
+    print('updatedChildrenMap $updatedChildrenMap');
     childrenMap.clear();
     childrenMap.addAll(updatedChildrenMap);
 
     setState(() => _itemsCount -= 1);
   }
 
+
   Offset _itemOffsetAt(int index) {
     final itemRenderBox =
-        _items[index]?.context.findRenderObject() as RenderBox?;
+    _items[index]?.context.findRenderObject() as RenderBox?;
     if (itemRenderBox == null) return Offset.zero;
     return itemRenderBox.localToGlobal(Offset.zero);
   }
@@ -702,8 +715,8 @@ class ReorderableAnimatedBuilderState extends State<ReorderableAnimatedBuilder>
 
   bool _dragEnabled(int index) =>
       widget.onReorder != null &&
-      !widget.nonDraggableIndices.contains(index) &&
-      !widget.lockedIndices.contains(index);
+          !widget.nonDraggableIndices.contains(index) &&
+          !widget.lockedIndices.contains(index);
 
   double childCrossAxisExtent = 0.0;
   double childMainAxisExtent = 0.0;
@@ -714,7 +727,7 @@ class ReorderableAnimatedBuilderState extends State<ReorderableAnimatedBuilder>
     if (widget.delegateBuilder == null) return;
     if (widget.delegateBuilder is SliverGridDelegateWithFixedCrossAxisCount) {
       final delegateBuilder =
-          widget.delegateBuilder as SliverGridDelegateWithFixedCrossAxisCount;
+      widget.delegateBuilder as SliverGridDelegateWithFixedCrossAxisCount;
       crossAxisCount = delegateBuilder.crossAxisCount;
       crossAxisSpacing = delegateBuilder.crossAxisSpacing;
       final childAspectRatio = delegateBuilder.childAspectRatio;
@@ -728,11 +741,11 @@ class ReorderableAnimatedBuilderState extends State<ReorderableAnimatedBuilder>
     }
     if (widget.delegateBuilder is SliverGridDelegateWithMaxCrossAxisExtent) {
       final delegateBuilder =
-          widget.delegateBuilder as SliverGridDelegateWithMaxCrossAxisExtent;
+      widget.delegateBuilder as SliverGridDelegateWithMaxCrossAxisExtent;
       crossAxisSpacing = delegateBuilder.crossAxisSpacing;
 
       int childCrossAxisCount = (constraints.crossAxisExtent /
-              (delegateBuilder.maxCrossAxisExtent + crossAxisSpacing))
+          (delegateBuilder.maxCrossAxisExtent + crossAxisSpacing))
           .ceil();
 
       // Ensure a minimum count of 1, can be zero and result in an infinite extent
@@ -769,19 +782,18 @@ class ReorderableAnimatedBuilderState extends State<ReorderableAnimatedBuilder>
     super.build(context);
     return widget.delegateBuilder != null
         ? SliverConstraintsCapture(
-            onConstraintsChanged: _updateChildExtent,
-            child: SliverGrid(
-              gridDelegate: widget.delegateBuilder!,
-              delegate: _createDelegate(),
-            ),
-          )
+      onConstraintsChanged: _updateChildExtent,
+      child: SliverGrid(
+        gridDelegate: widget.delegateBuilder!,
+        delegate: _createDelegate(),
+      ),
+    )
         : SliverList(delegate: _createDelegate());
   }
 
   Widget _itemBuilder(BuildContext context, int index) {
     final _ActiveItem? outgoingItem = _activeItemAt(_outgoingItems, index);
     final _ActiveItem? incomingItem = _activeItemAt(_incomingItems, index);
-
     if (outgoingItem != null) {
       final item = _items[index];
       if (item == null) return const SizedBox();
@@ -828,7 +840,7 @@ class ReorderableAnimatedBuilderState extends State<ReorderableAnimatedBuilder>
             animate: false);
       },
       capturedThemes:
-          InheritedTheme.capture(from: context, to: overlay.context),
+      InheritedTheme.capture(from: context, to: overlay.context),
       child: builder,
     );
   }
@@ -933,7 +945,7 @@ class ReorderableAnimatedBuilderState extends State<ReorderableAnimatedBuilder>
 
     // First, determine which semantics actions apply.
     final Map<CustomSemanticsAction, VoidCallback> semanticsActions =
-        <CustomSemanticsAction, VoidCallback>{};
+    <CustomSemanticsAction, VoidCallback>{};
 
     // Create the appropriate semantics actions.
     void moveToStart() => reorder(index, 0);
@@ -948,7 +960,7 @@ class ReorderableAnimatedBuilderState extends State<ReorderableAnimatedBuilder>
     // If the item can move to before its current position in the grid.
     if (index > 0) {
       semanticsActions[
-              CustomSemanticsAction(label: localizations.reorderItemToStart)] =
+      CustomSemanticsAction(label: localizations.reorderItemToStart)] =
           moveToStart;
       String reorderItemBefore = localizations.reorderItemUp;
       if (widget.scrollDirection == Axis.horizontal) {
@@ -971,7 +983,7 @@ class ReorderableAnimatedBuilderState extends State<ReorderableAnimatedBuilder>
       semanticsActions[CustomSemanticsAction(label: reorderItemAfter)] =
           moveAfter;
       semanticsActions[
-              CustomSemanticsAction(label: localizations.reorderItemToEnd)] =
+      CustomSemanticsAction(label: localizations.reorderItemToEnd)] =
           moveToEnd;
     }
 
@@ -1039,9 +1051,9 @@ class _MotionBuilderItemGlobalKey extends GlobalObjectKey {
 
   @override
   int get hashCode => Object.hash(
-        subKey,
-        state,
-      );
+    subKey,
+    state,
+  );
 }
 
 class _ActiveItem implements Comparable<_ActiveItem> {

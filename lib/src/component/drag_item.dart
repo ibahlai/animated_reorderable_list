@@ -38,7 +38,7 @@ class _DragInfo extends Drag {
     required this.tickerProvider,
   }) {
     final RenderBox itemRenderBox =
-        item.context.findRenderObject()! as RenderBox;
+    item.context.findRenderObject()! as RenderBox;
     listState = item.listState;
     index = item.index;
     child = item.widget.child;
@@ -125,7 +125,7 @@ Offset _restrictAxis(Offset offset, Axis scrollDirection) {
 
 Offset _overlayOrigin(BuildContext context) {
   final OverlayState overlay =
-      Overlay.of(context, debugRequiredFor: context.widget);
+  Overlay.of(context, debugRequiredFor: context.widget);
   final RenderBox overlayBox = overlay.context.findRenderObject()! as RenderBox;
   return overlayBox.localToGlobal(Offset.zero);
 }
@@ -141,12 +141,12 @@ class _DragItemProxy extends StatelessWidget {
 
   const _DragItemProxy(
       {required this.listState,
-      required this.index,
-      required this.child,
-      required this.position,
-      required this.size,
-      required this.animation,
-      required this.proxyDecorator});
+        required this.index,
+        required this.child,
+        required this.position,
+        required this.size,
+        required this.animation,
+        required this.proxyDecorator});
 
   @override
   Widget build(BuildContext context) {

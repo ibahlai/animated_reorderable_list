@@ -14,7 +14,7 @@ class SlideInUp extends AnimationEffect<Offset> {
   Widget build(BuildContext context, Widget child, Animation<double> animation,
       EffectEntry entry, Duration totalDuration) {
     final Animation<Offset> position = buildAnimation(entry, totalDuration,
-            begin: begin ?? beginValue, end: end ?? endValue)
+        begin: begin ?? beginValue, end: end ?? endValue)
         .animate(animation);
     return ClipRect(
         clipBehavior: Clip.hardEdge,

@@ -42,36 +42,36 @@ abstract class ReorderableAnimatedListBase<W extends Widget, E extends Object>
 
   const ReorderableAnimatedListBase(
       {Key? key,
-      required this.items,
-      this.itemBuilder,
-      this.onReorder,
-      this.onReorderEnd,
-      this.onReorderStart,
-      this.proxyDecorator,
-      this.enterTransition,
-      this.exitTransition,
-      this.insertDuration,
-      this.removeDuration,
-      required this.scrollDirection,
-      this.sliverGridDelegate,
-      this.insertItemBuilder,
-      this.removeItemBuilder,
-      this.buildDefaultDragHandles,
-      this.longPressDraggable,
-      this.isSameItem,
-      this.dragStartDelay,
-      this.enableSwap = true,
-      required this.nonDraggableItems,
-      required this.lockedItems,
-      this.addDragStartListener = true})
+        required this.items,
+        this.itemBuilder,
+        this.onReorder,
+        this.onReorderEnd,
+        this.onReorderStart,
+        this.proxyDecorator,
+        this.enterTransition,
+        this.exitTransition,
+        this.insertDuration,
+        this.removeDuration,
+        required this.scrollDirection,
+        this.sliverGridDelegate,
+        this.insertItemBuilder,
+        this.removeItemBuilder,
+        this.buildDefaultDragHandles,
+        this.longPressDraggable,
+        this.isSameItem,
+        this.dragStartDelay,
+        this.enableSwap = true,
+        required this.nonDraggableItems,
+        required this.lockedItems,
+        this.addDragStartListener = true})
       : assert(itemBuilder != null),
         super(key: key);
 }
 
 abstract class ReorderableAnimatedListBaseState<
-    W extends Widget,
-    B extends ReorderableAnimatedListBase<W, E>,
-    E extends Object> extends State<B> with TickerProviderStateMixin {
+W extends Widget,
+B extends ReorderableAnimatedListBase<W, E>,
+E extends Object> extends State<B> with TickerProviderStateMixin {
   late List<E> oldList;
 
   Duration _enterDuration = kAnimationDuration;
@@ -161,10 +161,10 @@ abstract class ReorderableAnimatedListBaseState<
       .asMap()
       .entries
       .where((entry) {
-        final found =
-            widget.nonDraggableItems.where((e) => isSameItem(e, entry.value));
-        return found.isNotEmpty;
-      })
+    final found =
+    widget.nonDraggableItems.where((e) => isSameItem(e, entry.value));
+    return found.isNotEmpty;
+  })
       .map((entry) => entry.key)
       .toList();
 
@@ -174,10 +174,10 @@ abstract class ReorderableAnimatedListBaseState<
       .asMap()
       .entries
       .where((entry) {
-        final items =
-            widget.lockedItems.where((e) => isSameItem(e, entry.value));
-        return items.isNotEmpty;
-      })
+    final items =
+    widget.lockedItems.where((e) => isSameItem(e, entry.value));
+    return items.isNotEmpty;
+  })
       .map((entry) => entry.key)
       .toList();
 
@@ -228,11 +228,11 @@ abstract class ReorderableAnimatedListBaseState<
         (effect.delay ?? zero) + (effect.duration ?? kAnimationDuration);
     if (enter) {
       _enterDuration =
-          timeForAnimation > _enterDuration ? timeForAnimation : _enterDuration;
+      timeForAnimation > _enterDuration ? timeForAnimation : _enterDuration;
       assert(_enterDuration >= zero, "Duration can not be negative");
     } else {
       _exitDuration =
-          timeForAnimation > _exitDuration ? timeForAnimation : _exitDuration;
+      timeForAnimation > _exitDuration ? timeForAnimation : _exitDuration;
       assert(_exitDuration >= zero, "Duration can not be negative");
     }
 
@@ -252,7 +252,7 @@ abstract class ReorderableAnimatedListBaseState<
       for (int i = 0; i < newList.length; i++) {
         if (!isSameItem(oldList[i], newList[i])) {
           final oldIndex =
-              oldList.indexWhere((oldItem) => isSameItem(oldItem, newList[i]));
+          oldList.indexWhere((oldItem) => isSameItem(oldItem, newList[i]));
 
           if (oldIndex != -1) {
             if (isSameItem(newList[oldIndex], oldList[i])) {
