@@ -667,8 +667,6 @@ class ReorderableAnimatedBuilderState extends State<ReorderableAnimatedBuilder>
   }
 
   void _onItemRemoved(int itemIndex, Duration removeDuration) async {
-    print('_onItemRemoved');
-    print('itemIndex $itemIndex');
     final updatedChildrenMap = <int, ItemTransitionData>{};
     if (childrenMap.containsKey(itemIndex)) {
       for (final entry in childrenMap.entries) {
@@ -678,7 +676,7 @@ class ReorderableAnimatedBuilderState extends State<ReorderableAnimatedBuilder>
           continue;
         } else {
           Offset startOffset = _itemOffsetAt(entry.key);
-          Offset endOffset =  Offset(startOffset.dx, _itemOffsetAt(entry.key - 1).dy) ;
+          Offset endOffset =  Offset(_itemOffsetAt(entry.key - 1).dx, _itemOffsetAt(entry.key - 1).dy) ;
           updatedChildrenMap[entry.key - 1] = childrenMap[entry.key]!.copyWith(
               startOffset: startOffset,
               endOffset: endOffset,
@@ -688,7 +686,6 @@ class ReorderableAnimatedBuilderState extends State<ReorderableAnimatedBuilder>
         }
       }
     }
-    print('updatedChildrenMap $updatedChildrenMap');
     childrenMap.clear();
     childrenMap.addAll(updatedChildrenMap);
 
