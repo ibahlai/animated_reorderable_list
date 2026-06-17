@@ -275,7 +275,7 @@ E extends Object> extends State<B> with TickerProviderStateMixin {
     for (int i = oldList.length - 1; i >= 0; i--) {
       if (newList.indexWhere((element) => isSameItem(oldList[i], element)) ==
           -1) {
-        listKey.currentState!.removeItem(i, removeItemDuration: removeDuration);
+        listKey.currentState!.removeItem(i, removeItemDuration: removeDuration, horizontalSlide: scrollDirection == Axis.horizontal);
       }
     }
     // Detect added items

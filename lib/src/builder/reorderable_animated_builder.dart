@@ -590,7 +590,7 @@ class ReorderableAnimatedBuilderState extends State<ReorderableAnimatedBuilder>
     });
   }
 
-  void removeItem(int index, {required Duration removeItemDuration}) {
+  void removeItem(int index, {required Duration removeItemDuration, bool horizontalSlide = false}) {
     assert(index >= 0);
     final int itemIndex = _indexToItemIndex(index);
     if (itemIndex < 0 || itemIndex >= _itemsCount) {
@@ -643,7 +643,7 @@ class ReorderableAnimatedBuilderState extends State<ReorderableAnimatedBuilder>
             for (int i = index; i < _itemsCount; i++) {
               currentOffsets[i] = _itemOffsetAt(i);
             }
-            _onItemRemoved(index, removeItemDuration);
+            _onItemRemoved(index, removeItemDuration, horizontalSlide: horizontalSlide);
           });
         }
       });
@@ -666,7 +666,7 @@ class ReorderableAnimatedBuilderState extends State<ReorderableAnimatedBuilder>
         startOffset: toOffset, endOffset: fromOffset, animate: !_isDragging);
   }
 
-  void _onItemRemoved(int itemIndex, Duration removeDuration) async {
+  void _onItemRemoved(int itemIndex, Duration removeDuration, {bool horizontalSlide = false}) async {
     final updatedChildrenMap = <int, ItemTransitionData>{};
     if (childrenMap.containsKey(itemIndex)) {
       for (final entry in childrenMap.entries) {
@@ -676,7 +676,9 @@ class ReorderableAnimatedBuilderState extends State<ReorderableAnimatedBuilder>
           continue;
         } else {
           Offset startOffset = _itemOffsetAt(entry.key);
-          Offset endOffset =  Offset(_itemOffsetAt(entry.key - 1).dx, _itemOffsetAt(entry.key - 1).dy) ;
+          double endX = horizontalSlide ? _itemOffsetAt(entry.key - 1).dx : startOffset.dx;
+          double endY = horizontalSlide ? startOffset.dy :  _itemOffsetAt(entry.key - 1).dy;
+          Offset endOffset =  Offset(endX, endY) ;
           updatedChildrenMap[entry.key - 1] = childrenMap[entry.key]!.copyWith(
               startOffset: startOffset,
               endOffset: endOffset,
@@ -686,6 +688,7 @@ class ReorderableAnimatedBuilderState extends State<ReorderableAnimatedBuilder>
         }
       }
     }
+    print('updatedChildrenMap $updatedChildrenMap');
     childrenMap.clear();
     childrenMap.addAll(updatedChildrenMap);
 
