@@ -477,6 +477,7 @@ class ReorderableAnimatedBuilderState extends State<ReorderableAnimatedBuilder>
   void dispose() {
     for (final _ActiveItem item in _incomingItems.followedBy(_outgoingItems)) {
       item.controller?.dispose();
+      item.sizeAnimation?.dispose();
     }
     _dragReset();
     super.dispose();
@@ -570,24 +571,25 @@ class ReorderableAnimatedBuilderState extends State<ReorderableAnimatedBuilder>
       childrenMap.clear();
       childrenMap.addAll(updatedChildrenMap);
       sizeController.forward().then((value) {
-        controller.forward().then<void>((_) {
-          _removeActiveItemAt(_incomingItems, incomingItem.itemIndex)!
-              .controller!
-              .dispose();
-        });
+        if (!mounted || !_incomingItems.contains(incomingItem)) return;
+        controller.forward().then<void>(
+            (_) => _completeInsertion(incomingItem));
       });
     } else {
       childrenMap[itemIndex] = ItemTransitionData();
       sizeController.value = kAlwaysCompleteAnimation.value;
-      controller.forward().then<void>((_) {
-        _removeActiveItemAt(_incomingItems, incomingItem.itemIndex)!
-            .controller!
-            .dispose();
-      });
+      controller.forward().then<void>(
+          (_) => _completeInsertion(incomingItem));
     }
     setState(() {
       _itemsCount += 1;
     });
+  }
+
+ void _completeInsertion(_ActiveItem incomingItem) {
+    if (!mounted || !_incomingItems.remove(incomingItem)) return;
+    incomingItem.controller?.dispose();
+    incomingItem.sizeAnimation?.dispose();
   }
 
   void removeItem(int index, {required Duration removeItemDuration, bool horizontalSlide = false}) {
@@ -613,23 +615,23 @@ class ReorderableAnimatedBuilderState extends State<ReorderableAnimatedBuilder>
               duration: removeItemDuration, value: 1.0, vsync: this)
             ..addStatusListener((status) => ());
       final _ActiveItem outgoingItem =
-      _ActiveItem.animation(controller, itemIndex, null);
+      _ActiveItem.animation(controller, itemIndex, sizeController);
 
       _outgoingItems
         ..add(outgoingItem)
         ..sort();
 
       controller.reverse().then<void>((void value) {
+        if (!mounted) return;
         if (controller.status == AnimationStatus.dismissed) {
           if (childrenMap.containsKey(index)) {
             childrenMap.update(
                 index, (value) => value.copyWith(visible: false));
           }
           sizeController.reverse(from: 1.0).then((value) {
-            final removedItem =
-            _removeActiveItemAt(_outgoingItems, outgoingItem.itemIndex)!;
-            removedItem.controller!.dispose();
-            // removedItem.sizeAnimation!.dispose();
+            if (!mounted || !_outgoingItems.remove(outgoingItem)) return;
+            outgoingItem.controller?.dispose();
+            outgoingItem.sizeAnimation?.dispose();
 
             // Decrement the incoming and outgoing item indices to account
             // for the removal.

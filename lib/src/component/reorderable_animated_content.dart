@@ -63,6 +63,7 @@ class ReorderableAnimatedContentState extends State<ReorderableAnimatedContent>
     _updateItemPosition();
 
     Future.delayed(kAnimationDuration).then((value) {
+      if (!mounted) return;
       visible = true;
       rebuild();
     });
